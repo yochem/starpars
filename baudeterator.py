@@ -6,24 +6,26 @@ import nltk
 nltk.download('punkt')
 
 def tokenize_corpus(filename):
-    """Tokenize the corpus and strip the newline characters (\n)."""
+    """
+    Tokenize the corpus and return a list of all sentences and a list
+    of all words. Returns two lists as tuple: (sentence_list, word_list).
+    """
     script_path = os.path.abspath(os.path.dirname(__file__))
 
-    if filename in os.listdir('.'):
-        corpus_file = 'corpus.txt'
-    elif filename in os.listdir(script_path):
+    if filename in os.listdir(script_path):
         corpus_file = script_path + '/corpus.txt'
+    elif filename in os.listdir('.'):
+        corpus_file = 'corpus.txt'
     else:
         raise FileNotFoundError
 
     with open(corpus_file) as f:
         cont = f.read()
+        # create a list with all sentences and remove the newline chars
         sentence_list = [l.replace('\n', ' ') for l in nltk.sent_tokenize(cont)]
-        word_list = []
-        for w in nltk.word_tokenize(cont):
-            # don't add non-words
-            if w != '.' and w != ',' and w != '?':
-                word_list.append(w)
+
+        # create a list of all words and filter punctuation marks
+        word_list = [w for w in nltk.word_tokenize(cont) if w not in '.,?']
 
     return sentence_list, word_list
 
