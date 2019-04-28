@@ -5,6 +5,9 @@ import os
 import nltk
 nltk.download('punkt')
 
+# set the comment char that's used in the corpus
+COMMENT_CHAR = '*'
+
 def tokenize_corpus(filename):
     """
     Tokenize the corpus and return a list of all sentences and a list
@@ -12,22 +15,29 @@ def tokenize_corpus(filename):
     """
     script_path = os.path.abspath(os.path.dirname(__file__))
 
+    # check if file is in directory of the script, else check current dir
     if filename in os.listdir(script_path):
         corpus_file = script_path + '/corpus.txt'
     elif filename in os.listdir('.'):
         corpus_file = 'corpus.txt'
     else:
+        # raise error if file can't be found
         raise FileNotFoundError
 
     with open(corpus_file) as f:
-        cont = f.read()
+        content = ''
+        for line in f.readlines():
+            if COMMENT_CHAR not in line:
+                content += line
+
         # create a list with all sentences and remove the newline chars
-        sentence_list = [l.replace('\n', ' ') for l in nltk.sent_tokenize(cont)]
-
+        sentences = [l.replace('\n', ' ') for l in nltk.sent_tokenize(content)]
         # create a list of all words and filter punctuation marks
-        word_list = [w for w in nltk.word_tokenize(cont) if w not in '.,?']
+        words = [w for w in nltk.word_tokenize(content) if w not in '!.,?']
 
-    return sentence_list, word_list
+        # TODO: currently, word is splits on '. (So, man's --> man & 's)
+
+    return sentences, words
 
 
 def analyze():
@@ -60,3 +70,4 @@ def analyze():
 if __name__ == '__main__':
     sentences, words = tokenize_corpus('corpus.txt')
     vocab = set(words)
+    analyze()
