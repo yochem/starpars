@@ -12,6 +12,7 @@ nltk.download('averaged_perceptron_tagger')
 
 # set the comment char that's used in the corpus
 COMMENT_CHAR = '*'
+IGNR_CHARS = '.?!,'
 
 def tokenize_corpus(filename):
     """
@@ -28,21 +29,21 @@ def tokenize_corpus(filename):
         corpus_file = filename
     else:
         # raise error if file can't be found
-        raise FileNotFoundError
+        raise FileNotFoundError(filename)
 
     with open(corpus_file) as f:
-        content = ''
+        cont = ''
         # first strip the comments from the corpus
         for line in f.readlines():
             if COMMENT_CHAR not in line:
-                content += line
+                cont += line
 
-        # create a list with all sentences and remove the newline chars
-        sentences = [l.replace('\n', ' ') for l in nltk.sent_tokenize(content)]
-        # create a list of all words
-        words = [w.lower() for w in nltk.word_tokenize(content)]
-        # create a list of tuples of the words and it's tag
-        tagged_words = nltk.pos_tag(words)
+    # create a list with all sentences and remove the newline chars
+    sentences = [l.replace('\n', ' ') for l in nltk.sent_tokenize(cont)]
+    # create a list of all words
+    words = [w.lower() for w in nltk.word_tokenize(cont) if w not in IGNR_CHARS]
+    # create a list of tuples of the words and it's tag
+    tagged_words = nltk.pos_tag(words)
 
     # save the tagged words to a file for reuse with load_tokenized_corpus()
     basename = os.path.splitext(filename)[0]
@@ -94,38 +95,11 @@ def load_tokenized_corpus(filename):
         sentences, words, tags = tokenize_corpus(txt_file)
     else:
         # raise error if file can't be found
-        raise FileNotFoundError
+        raise FileNotFoundError(filename)
 
     return sentences, words, tags
 
 
-def analyze():
-    """
-    Print information about the corpus. The information contains:
-    - 5 most used words;
-    - Total word count;
-    - Word count without duplicates (size vocab);
-    - Sentence count.
-    """
-    word_count = {}
-
-    for word in words:
-        if word in word_count:
-            word_count[word] += 1
-        else:
-            word_count[word] = 1
-
-    top_words = sorted(word_count, key=word_count.get, reverse=True)[:5]
-
-    print('Top 5 most used words:')
-    for tw in top_words:
-        print(f'{tw}: {word_count[tw]}')
-
-    print(f'Word count: {len(words)}')
-    print(f'Vocabulary size: {len(vocab)}')
-    print(f'Sentence count: {len(sentences)}')
-
-    #[wt[0] for (wt, _) in word_tag_fd.most_common() if wt[1] == 'VERB']
 
 
 if __name__ == '__main__':
