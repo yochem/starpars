@@ -13,4 +13,5 @@ Corpus text simplifications:
 
 | lines                      | original                                          | new                  | reason |
 |----------------------------|---------------------------------------------------|----------------------|--------|
-| 249-250                    | "...resources - food, medicine, and HYPERFUEL..." | "... resources. ..." |        |
+| 249-250                    | resources - food, medicine, and HYPERFUEL | resources |        |
+| I | Hoping to resolve the matter with a blockade of deadly battleships, the greedy Trade Federation has stopped all shipping to the small planet of Naboo. | the greedy Trade Federation has stopped all shipping to the small planet of Naboo. They hope to resolve the matter with a blockade of deadly battleships. | to prevent from subsentences |

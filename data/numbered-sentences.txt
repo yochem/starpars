@@ -1,0 +1,61 @@
+0 Turmoil has engulfed the Galactic Republic.
+1 The taxation of trade routes to outlying star systems is in dispute.
+2 the greedy Trade Federation has stopped all shipping to the small planet of Naboo.
+3 They hope to resolve the matter with a blockade of deadly battleships.
+4 While the Congress of the Republic endlessly debates this alarming chain of events, the Supreme Chancellor has secretly dispatched two Jedi Knights, the guardians of peace and justice in the galaxy, to settle the conflict.
+5 There is unrest in the Galactic Senate.
+6 Several thousand solar systems have declared their intentions to leave the Republic.
+7 This separatist movement, under the leadership of the mysterious Count Dooku, has made it difficult for the limited number of Jedi Knights to maintain peace and order in the galaxy.
+8 Senator Amidala, the former Queen of Naboo, is returning to the Galactic Senate to vote on the critical issue of creating an ARMY OF THE REPUBLIC to assist the overwhelmed Jedi.
+9 War!
+10 The Republic is crumbling under attacks by the ruthless Sith Lord, Count Dooku.
+11 There are heroes on both sides.
+12 Evil is everywhere.
+13 In a stunning move, the fiendish droid leader, General Grievous, has swept into the Republic capital and kidnapped Chancellor Palpatine, leader of the Galactic Senate.
+14 As the Separatist Droid Army attempts to flee the besieged capital with their valuable hostage, two Jedi Knights lead a desperate mission to rescue the captive Chancellor.
+15 It is a period of civil war.
+16 Rebel spaceships, striking from a hidden base, have won their first victory against the evil Galactic Empire.
+17 During the battle, Rebel spies managed to steal secret plans to the Empire's ultimate weapon, the DEATH STAR, an armored space station with enough power to destroy an entire planet.
+18 Pursued by the Empire's sinister agents, Princess Leia races home aboard her starship, custodian of the stolen plans that can save her people and restore freedom to the galaxy.
+19 It is a dark time for the Rebellion.
+20 Although the Death Star has been destroyed, Imperial troops have driven the Rebel forces from their hidden base and pursued them across the galaxy.
+21 Evading the dreaded Imperial Starfleet, a group of freedom fighters led by Luke Skywalker has established a new secret base on the remote ice world of Hoth.
+22 The evil lord Darth Vader, obsessed with finding young Skywalker, has dispatched thousands of remote probes into the far reaches of space.
+23 Luke Skywalker has returned to his home planet of Tatooine in an attempt to rescue his friend Han Solo from the clutches of the vile gangster Jabba the Hutt.
+24 Little does Luke know that the GALACTIC EMPIRE has secretly begun construction on a new armored space station even more powerful than the first dreaded Death Star.
+25 When completed, this ultimate weapon will spell certain doom for the small band of rebels struggling to restore freedom to the galaxy.
+26 Luke Skywalker has vanished.
+27 In his absence, the sinister FIRST ORDER has risen from the ashes of the Empire and will not rest until Skywalker, the last Jedi, has been destroyed.
+28 With the support of the REPUBLIC, General Leia Organa leads a brave RESISTANCE.
+29 She is desperate to find her brother Luke and gain his help in restoring peace and justice to the galaxy.
+30 Leia has sent her most daring pilot on a secret mission to Jakku, where an old ally has discovered a clue to Luke's whereabouts.
+31 The FIRST ORDER reigns.
+32 Having decimated the peaceful Republic, Supreme Leader Snoke now deploys the merciless legions to seize military control of the galaxy.
+33 Only General Leia Organa's band of RESISTANCE fighters stand against the rising tyranny, certain that Jedi Master Luke Skywalker will return and restore a spark of hope to the fight.
+34 But the Resistance has been exposed.
+35 As the First Order speeds toward the rebel base, the brave heroes mount a desperate escape.
+36 A galaxy divided.
+37 Striking swiftly after the Battle of Geonosis, Count Dooku's droid army has seized control of the major hyperspace lines, separating the Republic from the majority of its clone army.
+38 With few clones available, the Jedi Generals cannot gain a foothold in the Outer Rim, as more and more planets choose to join Dooku's Separatists.
+39 While the Jedi are occupied fighting a war, no-one is left to keep the peace.
+40 Chaos and crime spread and the innocent become victims in a lawless galaxy.
+41 Crime lord Jabba the Hutt's son has been kidnapped by a rival band of pirates.
+42 Desperate to save his son, Jabba puts out a call for help.
+43 A call the Jedi are cautious to answer.
+44 It is a lawless time.
+45 CRIME SYNDICATES compete for resources.
+46 On the shipbuilding planet of CORELLIA, the foul LADY PROXIMA forces runaways into a life of crime in exchange for shelter and protection.
+47 On these mean streets, a young man fights for survival, but yearns to fly among the stars.
+48 It is a time of crisis for the Rebel Alliance.
+49 On Cloud City, high above the planet Bespin, Han Solo has been captured by Darth Vader's Imperial forces and frozen in carbonite.
+50 As bounty hunter Boba Fett prepares to deliver the pirate to Jabba the Hutt, the Rebels hatch a desperate plan to save their friend.
+51 The Gungan ruler Boss Nass has refused to help the people of Naboo.
+52 Qui-Gon Jinn and Obi-Wan Kenobi have left his underwater city for the Royal Palace in Theed.
+53 As Trade Federation battle droids seize control of the Naboo capital city, Queen Amidala and Captain Panaka, her loyal protector, are powerless to repel the invasion.
+54 A couple of summers ago in a galaxy far far away.
+55 On the Desert planet of Tatooine lived two happy young moisture farmers, who had absolutely no plans of leaving or getting involved in any kind of intergalactic shenanigans.
+56 Unbeknownst to them the Galactic Empire had recently finished constructing its ultimate weapon, the DEATH STAR.
+57 Meanwhile, having learned the whereabouts of the Death Star's plans, the rebels send their best platypus agent to obtain them, in hopes of finding a weakness.
+58 And none of this is canon, so just relax.
+59 The Droid forces of the evil Separatists gather above the Wookiee planet Kashyyyk.
+60 The Jedi Knights have been dispatched to stop the invasion and re-build peace in the galaxy.

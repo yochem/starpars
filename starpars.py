@@ -2,6 +2,7 @@
 
 import os
 import pickle
+import sys
 
 from os.path import isfile
 
@@ -91,7 +92,7 @@ def load_tokenized_corpus(filename):
         with open(tags_file, 'rb') as f:
             tags = pickle.load(f)
     elif isfile(txt_file):
-        print('One or more datafiles missing, creating them')
+        print('One or more datafiles missing, creating them', file=sys.stderr)
         sentences, words, tags = tokenize_corpus(txt_file)
     else:
         # raise error if file can't be found
@@ -103,15 +104,17 @@ def load_tokenized_corpus(filename):
 
 
 if __name__ == '__main__':
-    # sentences, words, tagged_words = tokenize_corpus('corpus.txt')
-    load_tokenized_corpus('data/corpus')
+    sentences, words, tags = load_tokenized_corpus('data/corpus')
     # vocab = set(words)
-    # analyze()
 
     word_dict = {}
 
-    # for word, tag in tagged_words:
-    #     if word not in word_dict:
-    #         word_dict[word] = set(tag)
-    #     else:
-    #         word_dict[word].add(tag)
+    for word, tag in tags:
+        if tag not in word_dict:
+            word_dict[tag] = {word}
+        else:
+            word_dict[tag].add(word)
+
+    for num, sent in enumerate(sentences):
+        print(num, sent)
+
