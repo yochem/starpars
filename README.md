@@ -8,3 +8,9 @@ The multiple sources that form the corpus can be found in the corpus itself: `co
 
 
 A project by [Yochem van Rosmalen](@yochem) and [Lysa Ngouteau](@lysa-n).
+
+Corpus text simplifications:
+
+| lines                      | original                                          | new                  | reason |
+|----------------------------|---------------------------------------------------|----------------------|--------|
+| 249-250                    | "...resources - food, medicine, and HYPERFUEL..." | "... resources. ..." |        |
