@@ -6,4 +6,5 @@ IGNR_CHARS Geen tekens omdat dat geen toegevoegde waarde heeft.
 files maken voor alle soorten woorden: sentences, words, tags, zodat je niet
 meerdere keren hoeft te tokenizen. Scheelt in tijd.
 
+Makefile?
  

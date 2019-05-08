@@ -1,7 +1,18 @@
 #!/usr/bin/env python3
 
 import nltk
-import starpars
+import starpars as sp
+
+def header(title):
+    """Construct a nice looking header."""
+    star_count = int((20 - len(title) - 2)/2)
+    head = '\n' + '*'*20 + '\n'\
+        + '*'*star_count \
+        + ' ' + title.upper() + ' ' \
+        + '*'*star_count + '\n'\
+        + '*'*20
+    return head
+
 
 def analyze():
     """
@@ -12,21 +23,21 @@ def analyze():
     - Sentence count;
     - average word length;
     """
+    print(header('general'))
     # ignored characters
-    print(f'- Ignored punction: {starpars.IGNR_CHARS}')
+    print(f'- Ignored punction: {sp.IGNR_CHARS}')
 
+    print(header('words'))
     # total word count
     print(f'- The corpus contains {len(words)} words')
 
     # vocab size
     print(f'- The vocabulary size is {len(set(words))}')
 
-    # sentence count
-    print(f'- The corpus contains {len(sentences)} sentences')
-
     # average word length
     average_word_length = sum(len(word) for word in words) / len(words)
     print(f'- Average word length: {average_word_length:.1f} characters')
+
 
     # get word frequency
     word_freq = nltk.FreqDist(tags).most_common()
@@ -54,7 +65,32 @@ def analyze():
     # number of lonely words
     print(f'- The corpus has {len(least_words)} hapaxes')
 
+    # all part of speech tags used
+    tag_dict = {}
+    for _, tag in tags:
+        if tag not in tag_dict:
+            tag_dict[tag] = 1
+        else:
+            tag_dict[tag] += 1
+
+    print('- All part of speech tags and their count:')
+    for tag, count in tag_dict.items():
+        print(f'    - {tag:5}: {count:3.0f}')
+
+    print(header('sentences'))
+    # sentence count
+    print(f'- The corpus contains {len(sentences)} sentences')
+
+    # average sentences length
+    sum_words = 0
+    for sentence in sentences:
+        wc = len([x for x in nltk.word_tokenize(sentence) if x not in sp.IGNR_CHARS])
+        sum_words += wc
+
+    average_sent_length = sum_words / len(sentences)
+    print(f'- Average sentences length: {average_sent_length:.1f} words')
+
 
 if __name__ == '__main__':
-    sentences, words, tags = starpars.tokenize_corpus('data/corpus.txt')
+    sentences, words, tags = sp.tokenize_corpus('data/corpus.txt')
     analyze()
