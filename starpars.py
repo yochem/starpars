@@ -68,6 +68,15 @@ def analyze():
 
 
 if __name__ == '__main__':
-    sentences, words = tokenize_corpus('corpus.txt')
-    vocab = set(words)
-    analyze()
+    sentences, words, tags = load_tokenized_corpus('data/corpus')
+
+    word_dict = {}
+
+
+    for word, tag in tags:
+        if tag not in word_dict:
+            word_dict[tag] = set(word)
+        else:
+            word_dict[tag].add(word)
+
+    print(sentences)
