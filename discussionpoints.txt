@@ -7,4 +7,9 @@ files maken voor alle soorten woorden: sentences, words, tags, zodat je niet
 meerdere keren hoeft te tokenizen. Scheelt in tijd.
 
 Makefile?
- 
+
+
+
+nltrun website gebruikt, maar sommige dingen aangepast
+prp$ -> prp (nltk herkent $ niet)
+, -> ',' (nltk herkent , niet)

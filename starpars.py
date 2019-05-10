@@ -13,7 +13,7 @@ nltk.download('averaged_perceptron_tagger')
 
 # set the comment char that's used in the corpus
 COMMENT_CHAR = '*'
-IGNR_CHARS = '.?!,'
+IGNR_CHARS = '.?!'
 
 def tokenize_corpus(filename):
     """
@@ -101,20 +101,25 @@ def load_tokenized_corpus(filename):
     return sentences, words, tags
 
 
+def cfg(filename):
+    script_path = os.path.abspath(os.path.dirname(__file__))
+    if not isfile(f'{script_path}/{filename}'):
+        raise FileNotFoundError(filename)
+
+    parser = nltk.load_parser(f'file:{script_path}/{filename}')
+    print(parser)
+
 
 
 if __name__ == '__main__':
     sentences, words, tags = load_tokenized_corpus('data/corpus')
     # vocab = set(words)
+    cfg('data/grammar.cfg')
 
     word_dict = {}
 
-    for word, tag in tags:
-        if tag not in word_dict:
-            word_dict[tag] = {word}
-        else:
-            word_dict[tag].add(word)
-
-    for num, sent in enumerate(sentences):
-        print(num, sent)
-
+    # for word, tag in tags:
+    #     if tag not in word_dict:
+    #         word_dict[tag] = {word}
+    #     else:
+    #         word_dict[tag].add(word)
