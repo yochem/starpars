@@ -9,8 +9,9 @@ from random import choices
 
 import nltk
 
-nltk.download('punkt')
-nltk.download('averaged_perceptron_tagger')
+# download the needed nltk packages
+nltk.download('punkt', download_dir=os.getenv('HOME') + '/.cache/nltk')
+nltk.download('averaged_perceptron_tagger', download_dir=os.getenv('HOME') + '/.cache/nltk')
 
 # set the comment char that's used in the corpus
 COMMENT_CHAR = '*'
@@ -108,56 +109,25 @@ def cfg(filename):
         raise FileNotFoundError(filename)
 
     parser = nltk.load_parser(f'file:{script_path}/{filename}')
-    print(parser)
 
 
-def generate_lexicon(terminal_dict):
-    """Generates lexicon"""
-    lexicon = ""
-
-    for non_terminal, words in terminal_dict.items():
-        for word in words:
-            lexicon = lexicon + f"{non_terminal} -> {word}\n"
-    return lexicon
-
-#generate_lexicon(word_dict)
-
-
-def generate_phrase(grammar, prod = None):
-    if not prod:
-        prod = grammar.start()
-    if prod in grammar._lhs_index:
-        # Non-terminals
-        derivations = grammar._lhs_index[prod]
-        try:
-            probabilities = [d.prob() for d in derivations]
-        except AttributeError:
-            probabilities = None
-        derivation = choices(derivations, probabilities)[0]
-        for d in derivation._rhs:
-            yield from generate_phrase(grammar, d)
-    elif prod in grammar._rhs_index:
-        # Terminals
-        yield str(prod)
-
-def generate_corpus(syntax_rules, lexicon, prod = None):
-    # form string of lexicon rules
-    lexicon = generate_lexicon(lexicon)
-    # create full grammar
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%???grammar mag geen string zijn?????%%%%%%%%%%%%%%%%%%%%%
-    grammar = syntax_rules + lexicon
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    yield list(generate_phrase(grammar, prod))
-
-#[next(generate_corpus('grammar.cfg', word_dict)) for s in range(10)]
-
+def create_lexicon(words):
+    """
+    Create a lexicon in the right format for nltk.CFG.fromString() from
+    a dictionary with keys being the left side and values being the right
+    side.
+    """
+    lexicon = ''
+    for key, val in words.items():
+        lexicon += key + ' -> '
+        # add ' ' around every word
+        val = [f'\'{v}\'' for v in val]
+        # the words are seperated by a pipe
+        lexicon += ' | '.join(val) + '\n'
 
 
 if __name__ == '__main__':
     sentences, words, tags = load_tokenized_corpus('data/corpus')
-    # vocab = set(words)
-    cfg('data/grammar.cfg')
 
     word_dict = {}
 
@@ -166,6 +136,5 @@ if __name__ == '__main__':
             word_dict[tag] = {word}
         else:
             word_dict[tag].add(word)
-#    print(word_dict)
 
-#    [next(generate_corpus('grammar.cfg', word_dict)) for s in range(10)]
+    cfg('data/grammar.cfg')
