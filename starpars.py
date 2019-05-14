@@ -104,19 +104,39 @@ def load_tokenized_corpus(filename):
 
 
 def cfg(filename):
+    """
+    Grammar rules are saved in _filename_. Load them and add the
+    lexicon rules via create_lexicon() to it.
+    """
     script_path = os.path.abspath(os.path.dirname(__file__))
-    if not isfile(f'{script_path}/{filename}'):
-        raise FileNotFoundError(filename)
+    file_path = f'{script_path}/{filename}'
+    if not isfile(file_path):
+        raise FileNotFoundError(file_path)
 
-    parser = nltk.load_parser(f'file:{script_path}/{filename}')
+    # open the file and read the grammar rules
+    with open(file_path) as f:
+        cfg = f.read()
 
+    # add the lexicon to the grammar rules
+    cfg += create_lexicon(word_dict)
 
-def create_lexicon(words):
+    return cfg
+
+def create_lexicon(word_tags):
     """
     Create a lexicon in the right format for nltk.CFG.fromString() from
-    a dictionary with keys being the left side and values being the right
-    side.
+    a list with tuples with words and their tag.
     """
+
+    # dictionary to filter the double tags
+    word_dict = {}
+    for word, tag in word_tags:
+        if tag not in word_dict:
+            word_dict[tag] = {word}
+        else:
+            word_dict[tag].add(word)
+
+    # convert the dictionary to the right NLTK format
     lexicon = ''
     for key, val in words.items():
         lexicon += key + ' -> '
@@ -125,16 +145,12 @@ def create_lexicon(words):
         # the words are seperated by a pipe
         lexicon += ' | '.join(val) + '\n'
 
+    return lexicon
+
 
 if __name__ == '__main__':
+    # load and tokenize the corpus
     sentences, words, tags = load_tokenized_corpus('data/corpus')
 
-    word_dict = {}
-
-    for word, tag in tags:
-        if tag not in word_dict:
-            word_dict[tag] = {word}
-        else:
-            word_dict[tag].add(word)
-
+    # create the cfg with the grammar file
     cfg('data/grammar.cfg')
