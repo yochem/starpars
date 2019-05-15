@@ -3,11 +3,15 @@
 import os
 import pickle
 import sys
+import time
 
 from os.path import isfile
 from random import choices
 
 import nltk
+from nltk import CFG
+from nltk.parse import ViterbiParser
+from nltk.parse.generate import generate
 
 # download the needed nltk packages
 nltk.download('punkt', download_dir=os.getenv('HOME') + '/.cache/nltk')
@@ -118,9 +122,10 @@ def cfg(filename):
         cfg = f.read()
 
     # add the lexicon to the grammar rules
-    cfg += create_lexicon(word_dict)
+    cfg += create_lexicon(tags)
 
-    return cfg
+    return CFG.fromstring(cfg)
+
 
 def create_lexicon(word_tags):
     """
@@ -136,9 +141,17 @@ def create_lexicon(word_tags):
         else:
             word_dict[tag].add(word)
 
+    # PRO is the tag for 's, but the 's is not removed on nouns.
+    word_dict['NN'] = [x.replace('\'s', '') for x in word_dict['NN']]
+    word_dict['JJ'] = [x.replace('\'s', '') for x in word_dict['JJ']]
+    del word_dict[',']
+    word_dict['PRP'].update(word_dict['PRP$'])
+    del word_dict['PRP$']
+    word_dict['POS'] = ['"s']
+
     # convert the dictionary to the right NLTK format
     lexicon = ''
-    for key, val in words.items():
+    for key, val in word_dict.items():
         lexicon += key + ' -> '
         # add ' ' around every word
         val = [f'\'{v}\'' for v in val]
@@ -148,9 +161,19 @@ def create_lexicon(word_tags):
     return lexicon
 
 
+def generate_sentences(cfg, num: int = 10):
+    """
+    Generate _num_ number of sentences using a given cfg.
+    """
+    parser = ViterbiParser(cfg)
+
+    for i in generate(cfg, depth=14, n=10000):
+        print(i)
+
+
 if __name__ == '__main__':
     # load and tokenize the corpus
     sentences, words, tags = load_tokenized_corpus('data/corpus')
 
     # create the cfg with the grammar file
-    cfg('data/grammar.cfg')
+    generate_sentences(cfg('data/grammar.cfg'))
