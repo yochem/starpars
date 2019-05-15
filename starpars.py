@@ -3,14 +3,19 @@
 import os
 import pickle
 import sys
+import time
 
 from os.path import isfile
 from random import choices
 
 import nltk
+from nltk import CFG
+from nltk.parse import ViterbiParser
+from nltk.parse.generate import generate
 
-nltk.download('punkt')
-nltk.download('averaged_perceptron_tagger')
+# download the needed nltk packages
+nltk.download('punkt', download_dir=os.getenv('HOME') + '/.cache/nltk')
+nltk.download('averaged_perceptron_tagger', download_dir=os.getenv('HOME') + '/.cache/nltk')
 
 # set the comment char that's used in the corpus
 COMMENT_CHAR = '*'
@@ -103,69 +108,72 @@ def load_tokenized_corpus(filename):
 
 
 def cfg(filename):
+    """
+    Grammar rules are saved in _filename_. Load them and add the
+    lexicon rules via create_lexicon() to it.
+    """
     script_path = os.path.abspath(os.path.dirname(__file__))
-    if not isfile(f'{script_path}/{filename}'):
-        raise FileNotFoundError(filename)
+    file_path = f'{script_path}/{filename}'
+    if not isfile(file_path):
+        raise FileNotFoundError(file_path)
 
-    parser = nltk.load_parser(f'file:{script_path}/{filename}')
-    print(parser)
+    # open the file and read the grammar rules
+    with open(file_path) as f:
+        cfg = f.read()
 
+    # add the lexicon to the grammar rules
+    cfg += create_lexicon(tags)
 
-def generate_lexicon(terminal_dict):
-    """Generates lexicon"""
-    lexicon = ""
-
-    for non_terminal, words in terminal_dict.items():
-        for word in words:
-            lexicon = lexicon + f"{non_terminal} -> {word}\n"
-    return lexicon
-
-#generate_lexicon(word_dict)
+    return CFG.fromstring(cfg)
 
 
-def generate_phrase(grammar, prod = None):
-    if not prod:
-        prod = grammar.start()
-    if prod in grammar._lhs_index:
-        # Non-terminals
-        derivations = grammar._lhs_index[prod]
-        try:
-            probabilities = [d.prob() for d in derivations]
-        except AttributeError:
-            probabilities = None
-        derivation = choices(derivations, probabilities)[0]
-        for d in derivation._rhs:
-            yield from generate_phrase(grammar, d)
-    elif prod in grammar._rhs_index:
-        # Terminals
-        yield str(prod)
+def create_lexicon(word_tags):
+    """
+    Create a lexicon in the right format for nltk.CFG.fromString() from
+    a list with tuples with words and their tag.
+    """
 
-def generate_corpus(syntax_rules, lexicon, prod = None):
-    # form string of lexicon rules
-    lexicon = generate_lexicon(lexicon)
-    # create full grammar
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%???grammar mag geen string zijn?????%%%%%%%%%%%%%%%%%%%%%
-    grammar = syntax_rules + lexicon
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    yield list(generate_phrase(grammar, prod))
-
-#[next(generate_corpus('grammar.cfg', word_dict)) for s in range(10)]
-
-
-
-if __name__ == '__main__':
-    sentences, words, tags = load_tokenized_corpus('data/corpus')
-    # vocab = set(words)
-    cfg('data/grammar.cfg')
-
+    # dictionary to filter the double tags
     word_dict = {}
-
-    for word, tag in tags:
+    for word, tag in word_tags:
         if tag not in word_dict:
             word_dict[tag] = {word}
         else:
             word_dict[tag].add(word)
-#    print(word_dict)
 
-#    [next(generate_corpus('grammar.cfg', word_dict)) for s in range(10)]
+    # PRO is the tag for 's, but the 's is not removed on nouns.
+    word_dict['NN'] = [x.replace('\'s', '') for x in word_dict['NN']]
+    word_dict['JJ'] = [x.replace('\'s', '') for x in word_dict['JJ']]
+    del word_dict[',']
+    word_dict['PRP'].update(word_dict['PRP$'])
+    del word_dict['PRP$']
+    word_dict['POS'] = ['"s']
+
+    # convert the dictionary to the right NLTK format
+    lexicon = ''
+    for key, val in word_dict.items():
+        lexicon += key + ' -> '
+        # add ' ' around every word
+        val = [f'\'{v}\'' for v in val]
+        # the words are seperated by a pipe
+        lexicon += ' | '.join(val) + '\n'
+
+    return lexicon
+
+
+def generate_sentences(cfg, num: int = 10):
+    """
+    Generate _num_ number of sentences using a given cfg.
+    """
+    parser = ViterbiParser(cfg)
+
+    for i in generate(cfg, depth=14, n=10000):
+        print(i)
+
+
+if __name__ == '__main__':
+    # load and tokenize the corpus
+    sentences, words, tags = load_tokenized_corpus('data/corpus')
+
+    # create the cfg with the grammar file
+    generate_sentences(cfg('data/grammar.cfg'))
