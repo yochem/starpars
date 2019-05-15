@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
 
+import os
+
 import nltk
 import starpars as sp
+
+nltk.download('punkt', download_dir=os.getenv('HOME') + '/.cache/nltk')
 
 def header(title):
     """Construct a nice looking header."""

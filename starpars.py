@@ -27,7 +27,10 @@ def tokenize_corpus(filename):
     of all words. Returns a list of the sentences, a word list and a tuple
     with the tagged words. Also dumps the tagged words to {filename}.tags.
     """
-    script_path = os.path.abspath(os.path.dirname(__file__))
+    try:
+        script_path = os.path.abspath(os.path.dirname(__file__))
+    except NameError:
+        script_path = os.getcwd()
 
     # check if file is in directory of the script, else check current dir
     if isfile(f'{script_path}/{filename}'):
@@ -78,7 +81,10 @@ def load_tokenized_corpus(filename):
     data/corpus.sentences.
     """
     # the path of the script
-    script_path = os.path.abspath(os.path.dirname(__file__))
+    try:
+        script_path = os.path.abspath(os.path.dirname(__file__))
+    except NameError:
+        script_path = os.getcwd()
 
     # search for the data files and the origin corpus
     txt_file = f'{script_path}/{filename}.txt'
@@ -112,7 +118,11 @@ def cfg(filename):
     Grammar rules are saved in _filename_. Load them and add the
     lexicon rules via create_lexicon() to it.
     """
-    script_path = os.path.abspath(os.path.dirname(__file__))
+    try:
+        script_path = os.path.abspath(os.path.dirname(__file__))
+    except NameError:
+        script_path = os.getcwd()
+
     file_path = f'{script_path}/{filename}'
     if not isfile(file_path):
         raise FileNotFoundError(file_path)
@@ -167,13 +177,14 @@ def generate_sentences(cfg, num: int = 10):
     """
     parser = ViterbiParser(cfg)
 
-    for i in generate(cfg, depth=14, n=10000):
-        print(i)
+    for i in generate(cfg, depth=14, n=100):
+        print(' '.join(i) + '.')
 
 
 if __name__ == '__main__':
     # load and tokenize the corpus
     sentences, words, tags = load_tokenized_corpus('data/corpus')
 
+    # print(cfg('data/grammar.cfg'))
     # create the cfg with the grammar file
     generate_sentences(cfg('data/grammar.cfg'))

@@ -1,3 +1,5 @@
+update:
+	git pull
 
 run:
 	python3 starpars.py
