@@ -2,11 +2,11 @@
 
 import os
 import pickle
+import random
 import sys
 import time
 
 from os.path import isfile
-from random import choices
 
 import nltk
 from nltk import CFG
@@ -170,15 +170,49 @@ def create_lexicon(word_tags):
 
     return lexicon
 
+def create_sentence(cfg, symbol):
+    sentence = []
 
-def generate_sentences(cfg, num: int = 10):
+    prods = cfg.productions(lhs=symbol)
+    print(prods)
+    prod = random.choice(prods)
+
+    for sym in prod.rhs():
+        # if we've reached a terminal, add it to the sentence
+        if isinstance(sym, str):
+            sentence.append(sym)
+        # # else go on going down the tree
+        else:
+            sentence.extend(create_sentence(cfg, sym))
+
+    return sentence
+
+
+def generate_sentences(cfg, num: int = 1000, sample_size: int = 20):
     """
-    Generate _num_ number of sentences using a given cfg.
+    Generate sentences from a given CFG. Num is the number sentences
+    generated and sample_size is the number of returned sentences.
     """
     parser = ViterbiParser(cfg)
+    generator = parser.grammar()
 
-    for i in generate(cfg, depth=14, n=100):
-        print(' '.join(i) + '.')
+    gen_sent = []
+    for _ in range(num):
+        sentence = []
+        try:
+            sentence = create_sentence(cfg, cfg.start())
+        except:
+            pass
+
+        # add new sentence to the list
+        gen_sent.append(sentence)
+
+    # prevent recursive sentences and short sentences
+    sentences = [s for s in gen_sent if len(s) > 4 and len(s) < 15]
+    samples = random.sample(gen_sent, sample_size)
+
+    for samp in samples:
+        print(' '.join(samp))
 
 
 if __name__ == '__main__':
@@ -187,4 +221,6 @@ if __name__ == '__main__':
 
     # print(cfg('data/grammar.cfg'))
     # create the cfg with the grammar file
-    generate_sentences(cfg('data/grammar.cfg'))
+    # generate_sentences(cfg('data/grammar.cfg'))
+    CFG = cfg('data/grammar.cfg')
+    create_sentence(CFG, CFG.start())
