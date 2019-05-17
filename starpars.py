@@ -173,9 +173,11 @@ def create_lexicon(word_tags):
 def create_sentence(cfg, symbol):
     sentence = []
 
-    prods = cfg.productions(lhs=symbol)
-    print(prods)
-    prod = random.choice(prods)
+    try:
+        prods = cfg.productions(lhs=symbol)
+        prod = random.choice(prods)
+    except IndexError or RecursionError:
+        return sentence
 
     for sym in prod.rhs():
         # if we've reached a terminal, add it to the sentence
@@ -188,7 +190,8 @@ def create_sentence(cfg, symbol):
     return sentence
 
 
-def generate_sentences(cfg, num: int = 1000, sample_size: int = 20):
+def generate_sentences(cfg, num: int = 1000, sample_size: int = 20,
+                       min_sent_length: int = 4, max_sent_length: int = 20):
     """
     Generate sentences from a given CFG. Num is the number sentences
     generated and sample_size is the number of returned sentences.
@@ -208,11 +211,12 @@ def generate_sentences(cfg, num: int = 1000, sample_size: int = 20):
         gen_sent.append(sentence)
 
     # prevent recursive sentences and short sentences
-    sentences = [s for s in gen_sent if len(s) > 4 and len(s) < 15]
-    samples = random.sample(gen_sent, sample_size)
+    filtered_sent = [s for s in gen_sent if len(s) > min_sent_length and \
+                     len(s) < max_sent_length]
+    samples = random.sample(filtered_sent, sample_size)
 
     for samp in samples:
-        print(' '.join(samp))
+        print(' '.join(samp) + '.')
 
 
 if __name__ == '__main__':
@@ -223,4 +227,4 @@ if __name__ == '__main__':
     # create the cfg with the grammar file
     # generate_sentences(cfg('data/grammar.cfg'))
     CFG = cfg('data/grammar.cfg')
-    create_sentence(CFG, CFG.start())
+    generate_sentences(CFG)
