@@ -8,4 +8,4 @@ analyze:
 	python3 analyze.py
 
 clean:
-	rm -f data/corpus.sentences data/corpus.tags data/corpus.words
+	rm -f data/corpus.{sentences,tags,words}

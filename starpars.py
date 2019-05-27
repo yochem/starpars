@@ -14,8 +14,8 @@ from nltk.parse import ViterbiParser
 from nltk.parse.generate import generate
 
 # download the needed nltk packages
-nltk.download('punkt', download_dir=os.getenv('HOME') + '/.cache/nltk')
-nltk.download('averaged_perceptron_tagger', download_dir=os.getenv('HOME') + '/.cache/nltk')
+nltk.download('punkt', download_dir=os.getenv('HOME') + '/.local/share/nltk')
+nltk.download('averaged_perceptron_tagger', download_dir=os.getenv('HOME') + '/.local/share/nltk')
 
 # set the comment char that's used in the corpus
 COMMENT_CHAR = '*'
