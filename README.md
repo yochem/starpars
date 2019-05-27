@@ -13,9 +13,8 @@ The multiple sources that form the corpus can be found in the corpus itself:
 
 A project by [Yochem van Rosmalen](@yochem) and [Lysa Ngouteau](@lysa-n).
 
-
 ### Some generated sentences
-
+not done yet.
 
 ### License
-Licensed with the [MIT license](LICENSE)
+Licensed under the [MIT license](LICENSE).
