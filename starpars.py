@@ -4,18 +4,11 @@ import os
 import pickle
 import random
 import sys
-import time
 
 from os.path import isfile
 
 import nltk
 from nltk import CFG
-from nltk.parse import ViterbiParser
-from nltk.parse.generate import generate
-
-# download the needed nltk packages
-nltk.download('punkt', download_dir=os.getenv('HOME') + '/.local/share/nltk')
-nltk.download('averaged_perceptron_tagger', download_dir=os.getenv('HOME') + '/.local/share/nltk')
 
 # set the comment char that's used in the corpus
 COMMENT_CHAR = '*'
@@ -183,7 +176,7 @@ def create_sentence(cfg, symbol):
         # if we've reached a terminal, add it to the sentence
         if isinstance(sym, str):
             sentence.append(sym)
-        # # else go on going down the tree
+        # else go on going down the tree
         else:
             sentence.extend(create_sentence(cfg, sym))
 
@@ -196,10 +189,7 @@ def generate_sentences(cfg, num: int = 1000, sample_size: int = 20,
     Generate sentences from a given CFG. Num is the number sentences
     generated and sample_size is the number of returned sentences.
     """
-    parser = ViterbiParser(cfg)
-    generator = parser.grammar()
-
-    gen_sent = []
+    generated_sentences = []
     for _ in range(num):
         sentence = []
         try:
@@ -208,23 +198,23 @@ def generate_sentences(cfg, num: int = 1000, sample_size: int = 20,
             pass
 
         # add new sentence to the list
-        gen_sent.append(sentence)
+        if min_sent_length < len(sentence) < max_sent_length:
+            generated_sentences.append(sentence)
 
     # prevent recursive sentences and short sentences
-    filtered_sent = [s for s in gen_sent if len(s) > min_sent_length and \
-                     len(s) < max_sent_length]
-    samples = random.sample(filtered_sent, sample_size)
+    samples = random.sample(generated_sentences, sample_size)
 
     for samp in samples:
         print(' '.join(samp) + '.')
 
 
 if __name__ == '__main__':
+    # download the needed nltk packages
+    nltk.download('punkt', download_dir=os.getenv('HOME') + '/.local/share/nltk')
+    nltk.download('averaged_perceptron_tagger', download_dir=os.getenv('HOME') + '/.local/share/nltk')
+
     # load and tokenize the corpus
     sentences, words, tags = load_tokenized_corpus('data/corpus')
 
-    # print(cfg('data/grammar.cfg'))
     # create the cfg with the grammar file
-    # generate_sentences(cfg('data/grammar.cfg'))
     CFG = cfg('data/grammar.cfg')
-    generate_sentences(CFG)
